@@ -1,0 +1,91 @@
+# editor trash #
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.externalToolBuilders
+.metadata
+.checkstyle
+.idea
+*.iws
+*.iml
+*.ipr
+.vscode
+.sonar/
+.java-version
+**/*.private.env.json
+
+# swap files #
+*.swp
+activemq-data
+
+# other files #
+proxy.properties
+
+# maven release trash
+release.properties
+pom.xml.*
+.flattened-pom.xml
+.m2/
+
+# binaries  #
+*.class
+
+# package files #
+*.jar
+*.war
+*.ear
+*.tar.gz
+*.tgz
+*.zip
+*.jks
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# no design catalogs #
+design-catalog.xml
+
+# temp storage #
+temp/
+tmp/
+
+# log files #
+*.log
+logs/*
+
+# build junk #
+**/jspm_packages/
+**/build/
+**/node_modules/
+**/bower_components/
+**/dist/
+target/
+
+# runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# virtualisation #
+.vagrant
+*.box
+.envrc
+
+# provisioning #
+.ssh
+.netrc
+
+# transition #
+.svn
+
+# filesystem junk #
+.DS_Store
+*.ldb
+*.url
+/temp.properties
+/runLocal.sh
+/psrc-znpo0.cert
