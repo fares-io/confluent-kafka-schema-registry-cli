@@ -1,0 +1,5 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ns.alpha.v1/AlphaTwo",
+  "$ref": "ns.alpha.v1#/definitions/AlphaTwo"
+}

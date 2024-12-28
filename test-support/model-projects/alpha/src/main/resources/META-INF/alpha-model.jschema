@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ns.alpha.v1",
+  "description": "alpha model description",
+  "definitions": {
+    "AlphaOne": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "AlphaTwo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hash": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

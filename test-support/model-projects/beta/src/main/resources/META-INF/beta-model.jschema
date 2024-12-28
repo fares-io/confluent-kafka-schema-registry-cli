@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ns.beta.v1",
+  "description": "simple model description",
+  "definitions": {
+    "BetaOne": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "BetaTwo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hash": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

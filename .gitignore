@@ -35,6 +35,7 @@ pom.xml.*
 
 # package files #
 *.jar
+!test-support/repository/**/*.jar
 *.war
 *.ear
 *.tar.gz
