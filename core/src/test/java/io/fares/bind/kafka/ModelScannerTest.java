@@ -25,6 +25,7 @@ class ModelScannerTest {
 
   private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ModelScannerTest.class);
 
+  /// need to reset the java util logging root handlers and install SLF4J
   static {
     SLF4JBridgeHandler.removeHandlersForRootLogger();
     SLF4JBridgeHandler.install();
@@ -63,7 +64,7 @@ class ModelScannerTest {
   @BeforeEach
   void setupTest() {
     aether = new Aether(system, session, settings);
-    kscharc = new KScharc(aether, schemaRegistryClient);
+    kscharc = new KScharc(() -> aether.getClassLoader(), schemaRegistryClient);
   }
 
   @Test

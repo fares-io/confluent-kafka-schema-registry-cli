@@ -2,11 +2,16 @@ package io.fares.bind.maven;
 
 import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
+import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
+import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.repository.LocalRepository;
+import org.eclipse.aether.repository.LocalRepositoryManager;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
@@ -17,11 +22,12 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Aether implements Closeable {
+public class Aether implements Closeable, ClassLoaderProvider {
 
   public static final String MAVEN_DEPENDENCY_REALM_ID = "dependencies";
 
@@ -34,6 +40,11 @@ public class Aether implements Closeable {
    * the repository system session used to resolve artifacts
    */
   private final RepositorySystemSession session;
+
+  /**
+   * the maven settings used to configure the aether component
+   */
+  private final Settings settings;
 
   /**
    * the remote repository templates used when searching for artifacts
@@ -57,6 +68,7 @@ public class Aether implements Closeable {
                 @NotNull ClassWorld classWorld) {
     this.system = system;
     this.session = session;
+    this.settings = settings;
     this.classWorld = classWorld;
 
     // TODO check if we can offload the remote repository configuration to either system or session
@@ -78,12 +90,45 @@ public class Aether implements Closeable {
 
   }
 
+  public @NotNull RepositorySystem getSystem() {
+    return system;
+  }
+
+  public @NotNull RepositorySystemSession getSession() {
+    return session;
+  }
+
+  public @NotNull Settings getSettings() {
+    return settings;
+  }
+
+  public @NotNull ClassRealm getMavenRealm() {
+    return classWorld.getClassRealm(MAVEN_DEPENDENCY_REALM_ID);
+  }
+
+  /**
+   * Replace the local repository on the maven repository session.
+   *
+   * @param localRepositoryFolder the folder where the local repository will be created
+   */
+  public void changeLocalRepository(@NotNull File localRepositoryFolder) {
+    if (session instanceof DefaultRepositorySystemSession defaultSession) {
+      LocalRepository localRepository = new LocalRepository(localRepositoryFolder);
+      LocalRepositoryManager localRepositoryManager = system.newLocalRepositoryManager(session, localRepository);
+      defaultSession.setLocalRepositoryManager(localRepositoryManager);
+      // TODO clear the separated classloader as the resources are no longer loaded
+    } else {
+      throw new IllegalStateException("unable to update the local repository on the repository system session");
+    }
+  }
+
   /**
    * Get the classloader containing the resolved artifacts.
    *
    * @return the classloader
    */
-  public ClassLoader getClassLoader() {
+  @Override
+  public URLClassLoader getClassLoader() {
     return classWorld.getClassRealm(MAVEN_DEPENDENCY_REALM_ID);
   }
 
@@ -154,6 +199,15 @@ public class Aether implements Closeable {
       throw new IllegalArgumentException("failed to load artifact " + artifactJar.getAbsolutePath(), e);
     }
 
+  }
+
+  public void unloadArtifacts() {
+    try {
+      classWorld.disposeRealm(MAVEN_DEPENDENCY_REALM_ID);
+      classWorld.newRealm(MAVEN_DEPENDENCY_REALM_ID, null);
+    } catch (NoSuchRealmException | DuplicateRealmException e) {
+      throw new IllegalStateException("failed to clear maven dependencies realm", e);
+    }
   }
 
   /**

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,7 +35,6 @@ public class MavenExtension implements BeforeAllCallback, AfterAllCallback, Befo
   private static final ExtensionContext.Namespace MAVEN = create("io.fares.maven");
 
   private static final String SYSTEM = "system", SESSION = "session";
-
 
   /**
    * Create the maven embedder repository system.

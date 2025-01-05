@@ -35,6 +35,14 @@
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.shell</groupId>
+      <artifactId>spring-shell-starter</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.fares.bind.kafka</groupId>
       <artifactId>confluent-kafka-schema-registry-core</artifactId>
       <version>${revision}</version>

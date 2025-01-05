@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static io.fares.bind.kafka.SchemaInfoBuilder.schemaInfoBuilder;
 
@@ -24,22 +25,17 @@ class ModelScanner {
   private static final Logger classGraphLogger = LoggerFactory.getLogger("io.github.classgraph.ClassGraph");
 
   /**
-   * the classgraph scanner used under the covers to scan for resources in the artifact classloader
+   * the supplier that returns a classloader that
    */
-  private final ClassGraph classGraph;
+  private final Supplier<ClassLoader> artifactClassLoader;
 
   /**
    * Create an instance of the model scanner.
    *
    * @param artifactClassLoader the classloader used to scan for resources
    */
-  public ModelScanner(@NotNull ClassLoader artifactClassLoader) {
-    classGraph = new ClassGraph()
-      .verbose(classGraphLogger.isDebugEnabled())
-      .enableAnnotationInfo()
-      .ignoreParentClassLoaders()
-      .ignoreParentModuleLayers()
-      .overrideClassLoaders(artifactClassLoader);
+  public ModelScanner(@NotNull Supplier<ClassLoader> artifactClassLoader) {
+    this.artifactClassLoader = artifactClassLoader;
   }
 
   /**
@@ -48,6 +44,13 @@ class ModelScanner {
    * @return the list of schema found
    */
   public List<SchemaInfo> scan() {
+
+    final ClassGraph classGraph = new ClassGraph()
+      .verbose(classGraphLogger.isDebugEnabled())
+      .enableAnnotationInfo()
+      .ignoreParentClassLoaders()
+      .ignoreParentModuleLayers()
+      .overrideClassLoaders(artifactClassLoader.get());
 
     List<SchemaInfo> schemaInfo = new ArrayList<>();
 

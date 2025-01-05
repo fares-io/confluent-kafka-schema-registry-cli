@@ -4,19 +4,17 @@ import io.confluent.kafka.schemaregistry.ParsedSchema;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import io.confluent.kafka.schemaregistry.json.JsonSchema;
-import io.fares.bind.maven.Aether;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Supplier;
 
 public class KScharc {
 
   private static final Logger log = LoggerFactory.getLogger(KScharc.class);
-
-  private final Aether aether;
 
   private final SchemaRegistryClient registryClient;
 
@@ -24,18 +22,15 @@ public class KScharc {
 
   private final Map<String, String> refPointers = new HashMap<>();
 
-  public KScharc(@NotNull Aether aether,
+  public KScharc(@NotNull Supplier<ClassLoader> classLoader,
                  @NotNull SchemaRegistryClient registryClient) {
-    this.aether = aether;
-    this.scanner = new ModelScanner(aether.getClassLoader());
+    this.scanner = new ModelScanner(classLoader);
     this.registryClient = registryClient;
   }
-
 
   public List<SchemaInfo> getSchemaInfo() {
     return scanner.scan();
   }
-
 
   public List<SchemaInfo> loadSchemaInfo() {
 
@@ -80,7 +75,6 @@ public class KScharc {
     }
     return schemaInfo;
   }
-
 
   private @NotNull SchemaInfo resolveRef(@NotNull SchemaInfo schemaInfo) {
 
@@ -127,7 +121,7 @@ public class KScharc {
     return schemaInfo;
   }
 
-  private io.confluent.kafka.schemaregistry.client.rest.entities.SchemaReference toRef(io.fares.bind.kafka.SchemaReference ref) {
+  private @NotNull io.confluent.kafka.schemaregistry.client.rest.entities.SchemaReference toRef(@NotNull SchemaReference ref) {
     return new io.confluent.kafka.schemaregistry.client.rest.entities.SchemaReference(ref.getName(), ref.getSubject(), ref.getVersion());
   }
 
