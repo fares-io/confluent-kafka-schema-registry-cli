@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+<configuration debug="false">
+
+  <import class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
+  <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
+  <import class="ch.qos.logback.core.ConsoleAppender"/>
+
+  <contextListener class="LevelChangePropagator">
+    <resetJUL>true</resetJUL>
+  </contextListener>
+
+  <appender name="CONSOLE" class="ConsoleAppender">
+    <encoder class="PatternLayoutEncoder">
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="CONSOLE"/>
+  </root>
+
+  <logger name="io.fares.bind" level="info"/>
+
+</configuration>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.fares.examples</groupId>
+  <artifactId>model-projects</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
+    <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <local.repository.url>file://${maven.multiModuleProjectDirectory}/../repository</local.repository.url>
+  </properties>
+
+  <distributionManagement>
+    <repository>
+      <id>file</id>
+      <name>testing repository</name>
+      <url>${local.repository.url}</url>
+    </repository>
+  </distributionManagement>
+
+  <modules>
+    <module>alpha</module>
+    <module>beta</module>
+    <module>gamma</module>
+  </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.confluent</groupId>
+      <artifactId>kafka-schema-registry-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.fares.bind.kafka</groupId>
+        <artifactId>confluent-kafka-schema-registry-annotations</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>io.confluent</groupId>
+        <artifactId>kafka-schema-registry-client</artifactId>
+        <version>7.8.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.11.4</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>flatten-maven-plugin</artifactId>
+          <version>1.6.0</version>
+          <configuration>
+            <updatePomFile>true</updatePomFile>
+            <flattenMode>clean</flattenMode>
+            <pomElements>
+              <parent>remove</parent>
+              <dependencies>remove</dependencies>
+              <dependencyManagement>remove</dependencyManagement>
+              <build>remove</build>
+            </pomElements>
+          </configuration>
+          <executions>
+            <execution>
+              <id>flatten</id>
+              <phase>prepare-package</phase>
+              <goals>
+                <goal>flatten</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>flatten-clean</id>
+              <phase>clean</phase>
+              <goals>
+                <goal>clean</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+</project>
