@@ -1,0 +1,7 @@
+---
+spring:
+  application:
+    name: kscharc
+  shell:
+    context:
+      close: true

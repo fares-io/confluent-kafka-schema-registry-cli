@@ -1,0 +1,17 @@
+---
+spring:
+  shell:
+    interactive:
+      enabled: true
+  main:
+    banner-mode: 'off'
+
+
+
+jfrog:
+  url: test-support/repository
+
+maven:
+  local-repository-location: cli/target/local-repository
+  prefer-temporary-local-repository: false
+  prefer-user-settings: false
