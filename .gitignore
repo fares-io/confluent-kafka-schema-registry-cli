@@ -34,20 +34,17 @@ pom.xml.*
 *.class
 
 # package files #
-*.jar
 !test-support/repository/**/*.jar
+*.jar
 *.war
 *.ear
-*.tar.gz
+*.gz
 *.tgz
 *.zip
 *.jks
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-
-# no design catalogs #
-design-catalog.xml
 
 # temp storage #
 temp/
@@ -79,6 +76,8 @@ pids
 # provisioning #
 .ssh
 .netrc
+.terraform/
+.terraform.d/
 
 # transition #
 .svn

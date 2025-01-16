@@ -1,0 +1,11 @@
+---
+spring:
+  grpc:
+    server:
+      port: 9090
+      ssl:
+        enabled: false
+        bundle: ~
+
+kscharc:
+  provider-debug: true
