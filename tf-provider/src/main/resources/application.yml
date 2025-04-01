@@ -1,0 +1,36 @@
+---
+spring.application:
+  name: terraform-provider-kscharc
+
+spring.main:
+  banner-mode: 'off'
+
+spring.grpc:
+  server:
+    host: localhost
+    port: 0 # at runtime we want a random free port on the machine and advertise that to the terraform module via the initialisation string
+    ssl:
+      secure: true
+      bundle: server
+
+logging:
+  pattern:
+    console: ~
+  file:
+    name: kscharc-tf.log
+    path: .
+  include-application-name: false
+  level:
+    root: warn
+    org.springframework.boot:
+      devtools: warn
+spring:
+  ssl:
+    bundle:
+      pem:
+        server:
+          reload-on-update: false
+          keystore:
+            certificate: "classpath:certificates/server.pem"
+            private-key: "classpath:certificates/server.key"
+

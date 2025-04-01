@@ -1,0 +1,3 @@
+
+#### Stop Provider Command
+GRPC localhost:9090/tfplugin6.Provider/StopProvider
