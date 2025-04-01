@@ -26,15 +26,6 @@ public class TerraformProvider extends ProviderGrpc.ProviderImplBase implements 
   }
 
   @Override
-  public void hello(@NotNull Hello.Request request, @NotNull StreamObserver<Hello.Response> responseObserver) {
-    Hello.Response response = Hello.Response.newBuilder()
-      .setGreeting("Hello " + request.getName())
-      .build();
-    responseObserver.onNext(response);
-    responseObserver.onCompleted();
-  }
-
-  @Override
   public void getMetadata(GetMetadata.Request request, @NotNull StreamObserver<GetMetadata.Response> responseObserver) {
 
     GetMetadata.Response response = GetMetadata.Response.newBuilder()
